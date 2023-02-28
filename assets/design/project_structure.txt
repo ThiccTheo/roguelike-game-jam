@@ -1,0 +1,5 @@
+===== Project Structure =====
+- Components are PODs and should not have methods
+- Each module should typically have an associated plugin
+- Plugins should not have methods besides build
+- Systems should be free-floating functions
