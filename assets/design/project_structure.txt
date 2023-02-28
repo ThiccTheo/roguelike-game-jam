@@ -1,5 +1,13 @@
 ===== Project Structure =====
-- Components are PODs and should not have methods
-- Each module should typically have an associated plugin
-- Plugins should not have methods besides build
-- Systems should be free-floating functions
+
+- Components are PODs and should not have methods.
+
+- Utility methods are an exception, but they should typically be constructors or have &self/&mut self.
+
+- Each module should typically have an associated plugin.
+
+- Plugins should not have methods besides build.
+
+- A function is considered a system if it has either Query or Commands as a parameter.
+
+- Systems should be free-floating functions.

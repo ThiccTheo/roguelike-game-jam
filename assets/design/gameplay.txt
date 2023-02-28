@@ -1,3 +1,7 @@
 ===== Gameplay =====
-- Rogulikes have the aspects described in this article: http://www.roguebasin.com/index.php/Berlin_Interpretation
-- This gamejam requires permadeath (if you die, you have to fully restart) and procedural world/level generation
+
+- The deadline is March 30th; March 31st is the presentation day .
+
+- Rogulikes have the aspects described in this article: http://www.roguebasin.com/index.php/Berlin_Interpretation.
+
+- This gamejam requires permadeath (if you die, you have to fully restart) and procedural world/level generation.
