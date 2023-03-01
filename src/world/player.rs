@@ -1,9 +1,7 @@
 use {
-    crate::core::{
-        debug::add_debug_name,
-        graphics::{AsciiTextureAtlas, MainCamera},
-    },
+    crate::core::{debug::add_debug_name, graphics::AsciiTextureAtlas},
     bevy::prelude::*,
+    bevy_mouse_tracking_plugin::MainCamera,
 };
 
 pub struct PlayerPlugin;

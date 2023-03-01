@@ -1,5 +1,10 @@
-use {super::debug::add_debug_name, bevy::prelude::*};
+use {
+    super::debug::add_debug_name,
+    bevy::prelude::*,
+    bevy_mouse_tracking_plugin::{prelude::InsertExt, MainCamera},
+};
 
+pub const WINDOW_DIMENSIONS: Vec2 = Vec2::new(1280., 720.);
 const BACKGROUND_COLOR: Color = Color::BLACK;
 const CAMERA_ZOOM_FACTOR: f32 = 3.;
 const ASCII_SHEET_DIMENSIONS: Vec2 = Vec2::new(256., 388.);
@@ -16,15 +21,14 @@ impl Plugin for GraphicsPlugin {
     }
 }
 
-#[derive(Component)]
-pub struct MainCamera;
-
 fn spawn_main_camera(mut cmds: Commands) {
     let mut cam = Camera2dBundle::default();
     cam.projection.scale /= CAMERA_ZOOM_FACTOR;
 
     let mut cam = cmds.spawn(cam);
-    cam.insert(MainCamera);
+    cam.insert(MainCamera)
+        .add_mouse_tracking()
+        .add_world_tracking();
 
     #[cfg(debug_assertions)]
     add_debug_name(&mut cam, "Main Camera");
