@@ -1,15 +1,17 @@
-use {bevy::prelude::*, bevy_inspector_egui::quick::WorldInspectorPlugin};
+use {
+    bevy::{ecs::system::EntityCommands, prelude::*},
+    bevy_inspector_egui::quick::WorldInspectorPlugin,
+};
 
 pub struct DebugPlugin;
 
 impl Plugin for DebugPlugin {
     fn build(&self, app: &mut App) {
-        if cfg!(debug_assertions) {
-            app.add_plugin(WorldInspectorPlugin);
-        }
+        app.add_plugin(WorldInspectorPlugin);
     }
 }
 
-pub fn debug_name(name: impl Into<String>, id: Entity) -> Name {
-    Name::new(format!("{} | #{:?}", name.into(), id))
+pub fn add_debug_name(entity: &mut EntityCommands, name: impl Into<String>) {
+    entity.remove::<Name>();
+    entity.insert(Name::new(format!("{} | #{:?}", name.into(), entity.id())));
 }

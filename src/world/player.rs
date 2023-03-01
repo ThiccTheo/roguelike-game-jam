@@ -1,6 +1,6 @@
 use {
     crate::core::{
-        debug::debug_name,
+        debug::add_debug_name,
         graphics::{AsciiTextureAtlas, MainCamera},
     },
     bevy::prelude::*,
@@ -31,9 +31,8 @@ fn spawn_player(mut cmds: Commands, tex_atlas: Res<AsciiTextureAtlas>) {
         ..default()
     });
 
-    if cfg!(debug_assertions) {
-        player.insert(debug_name("Player", player.id()));
-    }
+    #[cfg(debug_assertions)]
+    add_debug_name(&mut player, "Player");
 }
 
 fn player_movement(
@@ -41,8 +40,8 @@ fn player_movement(
     time: Res<Time>,
     mut qry: Query<&mut Transform, Or<(With<Player>, With<MainCamera>)>>,
 ) {
-    let dt = time.delta_seconds().round();
-    let offset = dt * 100. + 1.;
+    let dt = time.delta_seconds();
+    let offset = dt * 100.;
     let mut translation = Vec3::ZERO;
 
     if keys.pressed(KeyCode::W) {

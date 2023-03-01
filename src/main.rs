@@ -9,16 +9,17 @@ mod world {
 
 use {
     crate::core::{debug::DebugPlugin, graphics::GraphicsPlugin},
-    bevy::{prelude::*, render::texture::ImageSampler},
+    bevy::prelude::*,
     world::{player::PlayerPlugin, tile::TilePlugin},
 };
 
 fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins.set(ImagePlugin {
-            default_sampler: ImageSampler::nearest_descriptor(),
-        }))
-        .add_plugin(DebugPlugin)
+    let mut app = App::new();
+
+    #[cfg(debug_assertions)]
+    app.add_plugin(DebugPlugin);
+
+    app.add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
         .add_plugin(GraphicsPlugin)
         .add_plugin(PlayerPlugin)
         .add_plugin(TilePlugin)

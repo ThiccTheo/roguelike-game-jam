@@ -1,4 +1,4 @@
-use {super::debug::debug_name, bevy::prelude::*};
+use {super::debug::add_debug_name, bevy::prelude::*};
 
 const BACKGROUND_COLOR: Color = Color::BLACK;
 const CAMERA_ZOOM_FACTOR: f32 = 3.;
@@ -10,6 +10,7 @@ pub struct GraphicsPlugin;
 impl Plugin for GraphicsPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(ClearColor(BACKGROUND_COLOR))
+            .insert_resource(Msaa { samples: 1 })
             .add_startup_system_to_stage(StartupStage::PreStartup, load_ascii_sheets)
             .add_startup_system(spawn_main_camera);
     }
@@ -25,10 +26,8 @@ fn spawn_main_camera(mut cmds: Commands) {
     let mut cam = cmds.spawn(cam);
     cam.insert(MainCamera);
 
-    if cfg!(debug_assertions) {
-        cam.remove::<Name>();
-        cam.insert(debug_name("Main Camera", cam.id()));
-    }
+    #[cfg(debug_assertions)]
+    add_debug_name(&mut cam, "Main Camera");
 }
 
 #[derive(Resource)]

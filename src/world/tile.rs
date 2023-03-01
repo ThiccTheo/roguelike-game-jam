@@ -1,6 +1,6 @@
 use {
     crate::core::{
-        debug::debug_name,
+        debug::add_debug_name,
         graphics::{AsciiTextureAtlas, SPRITE_DIMENSIONS},
     },
     bevy::prelude::*,
@@ -37,9 +37,8 @@ fn spawn_tiles(mut cmds: Commands, tex_atlas: Res<AsciiTextureAtlas>) {
                     ..default()
                 });
 
-                if cfg!(debug_assertions) {
-                    tile.insert(debug_name("Tile", tile.id()));
-                }
+                #[cfg(debug_assertions)]
+                add_debug_name(&mut tile, "Tile");
             }
         }
     }
