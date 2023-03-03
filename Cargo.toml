@@ -9,7 +9,9 @@ edition = "2021"
 bevy = { version = "0.9.1", features = ["dynamic"] }
 bevy-inspector-egui = "0.17.0"
 bevy_mouse_tracking_plugin = "0.5.3"
+bevy_rapier2d = "0.20.0"
 maplit = "1.0.2"
+rand = "0.8.5"
 
 # Enable a small amount of optimization in debug mode
 [profile.dev]

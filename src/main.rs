@@ -8,6 +8,9 @@ mod world {
     pub mod player;
     pub mod tile;
 }
+mod logic {
+    pub mod shooting;
+}
 
 use {
     crate::core::{
@@ -17,7 +20,9 @@ use {
     },
     bevy::prelude::*,
     bevy_mouse_tracking_plugin::prelude::MousePosPlugin,
+    bevy_rapier2d::prelude::*,
     world::{bullet::BulletPlugin, player::PlayerPlugin, tile::TilePlugin},
+    logic::shooting::ShootingPlugin,
 };
 
 fn main() {
@@ -38,11 +43,15 @@ fn main() {
     #[cfg(debug_assertions)]
     app.add_plugin(DebugPlugin);
 
+    #[cfg(debug_assertions)]
+    //app.add_plugin(RapierDebugRenderPlugin::default());
     app.add_plugin(MousePosPlugin)
+        .add_plugin(PlayerPlugin)
+        .add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
         .add_plugin(PhysicsPlugin)
         .add_plugin(GraphicsPlugin)
         .add_plugin(BulletPlugin)
-        .add_plugin(PlayerPlugin)
         .add_plugin(TilePlugin)
+        .add_plugin(ShootingPlugin)
         .run();
 }

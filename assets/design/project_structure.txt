@@ -1,4 +1,4 @@
-===== Project Structure =====
+===== Design Guidelines =====
 
 - Components are PODs and should not have methods.
 
@@ -8,6 +8,33 @@
 
 - Plugins should not have methods besides build.
 
-- A function is considered a system if it has either Query or Commands as a parameter.
+- A function is considered a system if it has Query and/or Commands as parameter(s).
 
 - Systems should be free-floating functions.
+
+
+
+===== Project Hierarchy =====
+
+core: game boilerplate and engine related stuff
+
+    debug.rs: features that are to be used in debug more
+
+    graphics.rs: calculations and dimensions for game graphics
+
+    physics.rs: hardcoded physics features separate from Rapier
+
+
+logic: entity-entity interactions and gameplay features
+
+
+world: functions for spawning entities into the world and their own behaviors
+
+    bullet.rs: defines creation for bullet entities and shooting
+
+    player.rs: player movement and spawning
+
+    tile.rs: tile spawning and collision stuff
+
+
+main.rs: creates app and adds all plugins

@@ -4,6 +4,7 @@ use {
         graphics::{AsciiTextureAtlas, SPRITE_DIMENSIONS},
     },
     bevy::prelude::*,
+    bevy_rapier2d::prelude::*,
 };
 
 pub struct TilePlugin;
@@ -35,7 +36,12 @@ fn spawn_tiles(mut cmds: Commands, tex_atlas: Res<AsciiTextureAtlas>) {
                         1.,
                     ),
                     ..default()
-                });
+                })
+                .insert(Collider::cuboid(
+                    SPRITE_DIMENSIONS.x / 2.,
+                    SPRITE_DIMENSIONS.y / 2.,
+                ))
+                .insert(ActiveEvents::COLLISION_EVENTS);
 
                 #[cfg(debug_assertions)]
                 add_debug_name(&mut tile, "Tile");

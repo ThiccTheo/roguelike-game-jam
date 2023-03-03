@@ -23,10 +23,10 @@ fn spawn_bullet(
     mouse: Res<Input<MouseButton>>,
     tex_atlas: Res<AsciiTextureAtlas>,
     mouse_pos: Res<MousePosWorld>,
-    qry: Query<&Transform, With<Player>>,
+    player_qry: Query<&Transform, With<Player>>,
 ) {
     if mouse.just_pressed(MouseButton::Left) {
-        let Ok(player_transform) = qry.get_single() else { return };
+        let Ok(player_transform) = player_qry.get_single() else { return };
         let player_pos = player_transform.translation.truncate();
         let (delta_x, delta_y) = (mouse_pos.x - player_pos.x, mouse_pos.y - player_pos.y);
         let magnitude = (delta_x.powi(2) + delta_y.powi(2)).sqrt();
@@ -41,10 +41,10 @@ fn spawn_bullet(
                     ..default()
                 },
                 texture_atlas: tex_atlas.0.clone(),
-                transform: Transform::from_xyz(mouse_pos.x, mouse_pos.y, 1.),
+                transform: Transform::from_xyz(player_pos.x, player_pos.y, 1.),
                 ..default()
             })
-            .insert(Velocity(dir));
+            .insert(Velocity(dir * Vec2::splat(5.)));
 
         #[cfg(debug_assertions)]
         add_debug_name(&mut bullet, "Bullet");

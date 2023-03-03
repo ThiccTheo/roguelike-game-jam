@@ -12,7 +12,7 @@ impl Plugin for PhysicsPlugin {
 pub struct Velocity(pub Vec2);
 
 fn apply_velocity(mut qry: Query<(&mut Transform, &Velocity)>) {
-    for (mut transform, velocity) in qry.iter_mut() {
-        transform.translation += velocity.0.extend(0.);
+    for (mut transform, vel) in qry.iter_mut() {
+        transform.translation += vel.0.extend(0.);
     }
 }

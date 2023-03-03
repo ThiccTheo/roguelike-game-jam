@@ -1,5 +1,6 @@
 use {
     super::debug::add_debug_name,
+    crate::world::player::Player,
     bevy::prelude::*,
     bevy_mouse_tracking_plugin::{prelude::InsertExt, MainCamera},
 };
@@ -9,6 +10,7 @@ const BACKGROUND_COLOR: Color = Color::BLACK;
 const CAMERA_ZOOM_FACTOR: f32 = 3.;
 const ASCII_SHEET_DIMENSIONS: Vec2 = Vec2::new(256., 388.);
 pub const SPRITE_DIMENSIONS: Vec2 = Vec2::new(8., 16.);
+const CAMERA_FOLLOW_SPEED: f32 = 7.5;
 
 pub struct GraphicsPlugin;
 
@@ -17,7 +19,8 @@ impl Plugin for GraphicsPlugin {
         app.insert_resource(ClearColor(BACKGROUND_COLOR))
             .insert_resource(Msaa { samples: 1 })
             .add_startup_system_to_stage(StartupStage::PreStartup, load_ascii_sheets)
-            .add_startup_system(spawn_main_camera);
+            .add_startup_system(spawn_main_camera)
+            .add_system(camera_follow);
     }
 }
 
@@ -53,4 +56,20 @@ fn load_ascii_sheets(
     );
     let handle = tex_atlases.add(tex_atlas);
     cmds.insert_resource(AsciiTextureAtlas(handle));
+}
+
+fn camera_follow(
+    mut cam_qry: Query<&mut Transform, With<MainCamera>>,
+    player_qry: Query<&Transform, (With<Player>, Without<MainCamera>, Changed<Transform>)>,
+    time: Res<Time>,
+) {
+    let Ok(mut cam_transform) = cam_qry.get_single_mut() else { return };
+    let Ok(player_transform) = player_qry.get_single() else { return };
+    let dt = time.delta_seconds();
+
+    cam_transform.translation = Vec3::lerp(
+        cam_transform.translation,
+        player_transform.translation,
+        dt * CAMERA_FOLLOW_SPEED,
+    );
 }
